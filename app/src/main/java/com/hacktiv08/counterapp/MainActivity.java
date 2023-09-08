@@ -25,11 +25,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         counter.setOnClickListener(this);
         namaET = findViewById(R.id.editTextText);
 
+        // Memeriksa apakah ada data tersimpan saat rotate
+        if (savedInstanceState != null) {
+            hitung = savedInstanceState.getInt("hitung");
+            scoreTV.setText(String.valueOf(hitung));
+        }
     }
 
     @Override
     public void onClick(View view) {
-        hitung = hitung+1;
+        String currentscore = scoreTV.getText().toString();
+        int currentscoreInt = Integer.valueOf(currentscore);
+
+        hitung = currentscoreInt + 1;
+        scoreTV.setText(String.valueOf(hitung));
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        // Simpan data yang perlu dipertahankan saat rotate
+        outState.putInt("hitung", hitung);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle state) {
+        super.onRestoreInstanceState(state);
+        // Pulihkan data yang disimpan saat rotate
+        hitung = state.getInt("hitung");
         scoreTV.setText(String.valueOf(hitung));
     }
 }
